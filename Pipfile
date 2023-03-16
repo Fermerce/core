@@ -5,6 +5,7 @@ name = "pypi"
 
 [scripts]
 start = "python ./bootstrap.py"
+start_worker = "python bootstrap_worker.py"
 format = "black --line-length=100 ."
 sanitize = "flake8 ."
 
@@ -14,6 +15,7 @@ uvicorn = "*"
 sqlalchemy = "*"
 asyncpg = "*"
 alembic = "*"
+pika = "*"
 dramatiq = {extras = ["rabbitmq", "watch"], version = "*"}
 
 [dev-packages]

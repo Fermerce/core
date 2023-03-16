@@ -1,6 +1,6 @@
 import os
 import datetime
-from typing import List
+from typing import List, Optional
 from functools import lru_cache
 import pydantic as pyd
 from src.lib.utils import get_path
@@ -31,6 +31,14 @@ class Settings(pyd.BaseSettings):
     db_port: int = os.getenv("DB_PORT")
     db_host: str = os.getenv("DB_HOST")
     db_type: str = os.getenv("DB_TYPE")
+
+    # background task broker settings e.g rabbit mq, redis etc.
+    broker_type: str = os.getenv("BROKER_TYPE")
+    broker_host: str = os.getenv("BROKER_HOST")
+    broker_port: int = os.getenv("BROKER_PORT")
+    broker_user: str = os.getenv("BROKER_USER")
+    broker_password: str = os.getenv("BROKER_PASSWORD")
+    broker_virtual_host: Optional[str] = os.getenv("BROKER_Virtual_HOST")
     # JSON web token settings
     secret_key: str = os.getenv("SECRET_KEY")
     refresh_secret_key: str = os.getenv("REFRESH_SECRET_KEY")
@@ -44,8 +52,6 @@ class Settings(pyd.BaseSettings):
     base_dir: pyd.DirectoryPath = get_path.get_base_dir()
     email_template_dir: pyd.DirectoryPath = get_path.get_template_dir()
     static_file_dir: pyd.DirectoryPath = get_path.get_static_file_dir()
-
-
 
     def get_access_expires_time(self):
         return datetime.timedelta(seconds=self.access_token_expire_time)
@@ -63,6 +69,9 @@ class Settings(pyd.BaseSettings):
         ]:
             return f"{self.db_type}://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"
         return "sqlite+aiosqlite:///./testing.sqlite"
+
+    def get_broker_url(self) -> str:
+        return f"{self.broker_type}://{self.broker_user}:{self.broker_password}@{self.broker_host}:{self.broker_port}/{self.broker_virtual_host}"
 
     class Config:
         env_file: str = ".env"
