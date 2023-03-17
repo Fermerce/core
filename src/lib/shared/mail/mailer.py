@@ -19,7 +19,7 @@ class Mailer(template_finder.MailTemplate):
         subject: str,
         sender_email: Optional[pydantic.EmailStr] = config.admin_email,
         sender_password: Optional[str] = config.admin_password,
-        email_server: Optional[str] = config.email_server,
+        email_host: Optional[str] = config.email_host,
         email_server_port: Optional[int] = config.email_port,
         template_folder: Optional[pydantic.DirectoryPath] = config.email_template_dir,
         website_name: str = config.project_name,
@@ -34,7 +34,7 @@ class Mailer(template_finder.MailTemplate):
         self.admin_email = sender_email
         self.admin_password = sender_password
         self.template_name = template_name
-        self.email_server = email_server
+        self.email_host = email_host
         self.email_server_port = email_server_port
         self.use_google = use_google
         self.website_name = website_name
@@ -82,7 +82,7 @@ class Mailer(template_finder.MailTemplate):
                 message.attach(attachment)
         try:
             with smtplib.SMTP_SSL(
-                host=self.email_server, port=self.email_server_port
+                host=self.email_host, port=self.email_server_port
             ) as smtp:
                 smtp.login(
                     user=self.admin_email,
