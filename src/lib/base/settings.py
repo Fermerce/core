@@ -17,10 +17,12 @@ class Settings(pyd.BaseSettings):
     environment: str = os.getenv("ENVIRONMENT")
     backend_cors_origins: List[str] = os.getenv("BACKEND_CORS_ORIGINS")
     # admin email settings
+
     admin_email: str = os.getenv("ADMIN_EMAIL")
     admin_password: str = os.getenv("ADMIN_PASSWORD")
     email_port: int = os.getenv("EMAIL_PORT")
-    email_server: str = os.getenv("EMAIL_SERVER")
+    email_host: str = os.getenv("EMAIL_HOST")
+    email_backend: str = os.getenv("EMAIL_BACKEND")
     # developer contact information
     contact_email: str = os.getenv("CONTACT_EMAIL")
     contact_name: str = os.getenv("CONTACT_NAME")
@@ -39,6 +41,7 @@ class Settings(pyd.BaseSettings):
     broker_user: str = os.getenv("BROKER_USER")
     broker_password: str = os.getenv("BROKER_PASSWORD")
     broker_virtual_host: Optional[str] = os.getenv("BROKER_Virtual_HOST")
+    broker_backend_result_url: str = os.getenv("BROKER_BACKEND_RESULT_URL")
     # JSON web token settings
     secret_key: str = os.getenv("SECRET_KEY")
     refresh_secret_key: str = os.getenv("REFRESH_SECRET_KEY")
@@ -70,8 +73,14 @@ class Settings(pyd.BaseSettings):
             return f"{self.db_type}://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"
         return "sqlite+aiosqlite:///./testing.sqlite"
 
-    def get_broker_url(self) -> str:
-        return f"{self.broker_type}://{self.broker_user}:{self.broker_password}@{self.broker_host}:{self.broker_port}/{self.broker_virtual_host}"
+    def get_broker_url(self, include_virtue: bool = True) -> str:
+        url = f"{self.broker_type}://{self.broker_user}:{self.broker_password}@{self.broker_host}:{self.broker_port}"
+        if include_virtue:
+            return f"{url}/{self.broker_virtual_host}"
+        return url
+
+    def get_broker_result_backend_url(self) -> str:
+        return self.broker_backend_result_url
 
     class Config:
         env_file: str = ".env"
@@ -83,3 +92,4 @@ def get_settings():
 
 
 config = get_settings()
+print(config.get_broker_url())

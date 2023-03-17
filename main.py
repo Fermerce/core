@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from src.celery.tasks.example.publisher import publish_message
+from src.celery.tasks.example.tasks import test_task
 from src.lib.base.settings import config
 from src.lib.middleware.exclude_data_from_response import exclude_keys_middleware
 from src.lib.middleware.response_formatter import response_data_transformer
@@ -39,6 +41,7 @@ app = get_application()
 
 @app.get("/", response_model=IHealthCheck, tags=["Health status"])
 def health_check():
+    publish_message()
     return IHealthCheck(
         name=config.project_name,
         version=config.project_version,

@@ -5,7 +5,7 @@ name = "pypi"
 
 [scripts]
 start = "python ./bootstrap.py"
-start_worker = "python bootstrap_worker.py"
+start_worker = "celery -A src.celery.app  worker -l INFO"
 format = "black --line-length=100 ."
 sanitize = "flake8 ."
 
@@ -16,7 +16,7 @@ sqlalchemy = "*"
 asyncpg = "*"
 alembic = "*"
 pika = "*"
-dramatiq = {extras = ["rabbitmq", "watch"], version = "*"}
+celery = "*"
 
 [dev-packages]
 pytest = "*"
