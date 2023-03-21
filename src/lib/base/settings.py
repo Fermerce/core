@@ -16,6 +16,9 @@ class Settings(pyd.BaseSettings):
     project_url: str = os.getenv("PROJECT_URL")
     environment: str = os.getenv("ENVIRONMENT")
     backend_cors_origins: List[str] = os.getenv("BACKEND_CORS_ORIGINS")
+    app_task_type: str = os.getenv("app_task_type", "direct")
+    app_name: str = os.getenv("APP_NAME", "CORE")
+
     # admin email settings
 
     admin_email: str = os.getenv("ADMIN_EMAIL")
@@ -92,4 +95,3 @@ def get_settings():
 
 
 config = get_settings()
-print(config.get_broker_url())

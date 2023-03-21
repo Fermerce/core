@@ -1,8 +1,9 @@
+from src.lib.base.settings import config
 import uvicorn
 
 
 def run_server():
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("main:app", reload=config.debug, workers=8)
 
 
 if __name__ == "__main__":
