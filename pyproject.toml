@@ -11,7 +11,7 @@ readme = "README.md"
 homepage = "https://github.com/fermerce/core"
 repository = "https://github.com/fermerce/core"
 documentation = "https://github.com/fermerce/core/docs"
-keywords = ["python", "ecommerce", "fastapi", "celery"]
+keywords = ["python", "ecommerce", "fastapi", "dramatiq", "kombu", "microservice"]
 
 
 
