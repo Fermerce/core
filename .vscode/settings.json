@@ -9,5 +9,5 @@
     "**/Thumbs.db": true,
     "**/**/__pycache__": true
   },
-  "cSpell.words": ["uvicorn"]
+  "cSpell.words": ["exhange", "kombu", "uvicorn"]
 }

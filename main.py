@@ -1,12 +1,18 @@
+from datetime import datetime
+import json
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.celery.tasks.example.publisher import publish_message
-from src.celery.tasks.example.tasks import test_task
+
+
+# from src.celery.tasks.example.tasks import mul
 from src.lib.base.settings import config
-from src.lib.middleware.exclude_data_from_response import exclude_keys_middleware
+from src.lib.middleware.exclude_data_from_response import (
+    exclude_keys_middleware,
+)
 from src.lib.middleware.response_formatter import response_data_transformer
 from src.lib.base.router import v1, admin_v1
 from src.lib.base.schema.response import IHealthCheck
+from src.dramatiq_tasks.tasks.example.tasks import process_data
 
 
 def get_application():
@@ -40,8 +46,9 @@ app = get_application()
 
 
 @app.get("/", response_model=IHealthCheck, tags=["Health status"])
-def health_check():
-    publish_message()
+async def health_check():
+    data = json.dumps({"status": "ok", "age": 23, "date": str(datetime.now())})
+    process_data.send(data=data)
     return IHealthCheck(
         name=config.project_name,
         version=config.project_version,
