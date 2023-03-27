@@ -8,7 +8,7 @@ from typing import Optional, List, Union
 import pydantic
 from src.lib.shared.mail import exception
 from src.lib.shared.mail import template_finder
-from src.lib.base.settings import config
+from src._base.settings import config
 
 from src.lib.errors import error
 

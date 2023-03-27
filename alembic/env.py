@@ -8,7 +8,7 @@ from sqlalchemy.engine import Connection
 
 from alembic import context
 from db.config import metadata
-from src.base.model.models import model_for_alembic  # noqa
+from src._base.model.models import model_for_alembic  # noqa
 from core.src.base.settings import config as base_config
 
 # this is the Alembic Config object, which provides
