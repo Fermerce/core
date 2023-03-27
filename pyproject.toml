@@ -11,18 +11,19 @@ readme = "README.md"
 homepage = "https://github.com/fermerce/core"
 repository = "https://github.com/fermerce/core"
 documentation = "https://github.com/fermerce/core/docs"
-keywords = ["python", "ecommerce", "fastapi", "celery"]
+keywords = ["python", "ecommerce", "fastapi", "dramatiq", "kombu", "microservice"]
 
 
 
 [tool.poetry.dependencies]
-python = ">=3.9"
+python = ">=3.8.1,<4.0"
 fastapi = {extras = ["all"], version = "^0.95.0"}
 alembic = "^1.10.2"
 sqlalchemy = "^2.0.7"
 asyncpg = "^0.27.0"
 kombu = "^5.2.4"
-dramatiq = {extras = ["rabbitmq", "watch"], version = "^1.14.1"}
+taskiq-aio-pika = "^0.1.1"
+taskiq = "^0.3.3"
 
 
 [tool.poetry.scripts]

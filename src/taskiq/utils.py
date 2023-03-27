@@ -3,8 +3,7 @@ import os
 import typing as t
 import socket
 import importlib.util
-import dramatiq
-from src.dramatiq_tasks.config import connection
+from src.taskiq.config import connection
 import kombu
 
 
@@ -30,9 +29,7 @@ def create_producer(queue: kombu.Queue, content_type: str = "application/json"):
     return produce
 
 
-def create_consumer(
-    queue: kombu.Queue, callback_fun: t.Callable[..., t.Any], accept=["json"]
-):
+def create_consumer(queue: kombu.Queue, callback_fun: t.Callable[..., t.Any], accept=["json"]):
     consumer = kombu.Consumer(
         connection,
         queues=[queue],
@@ -67,15 +64,13 @@ def discover(directory, recursive=True):
             if name.endswith(".py"):
                 module_path = os.path.join(root, name)
                 module_name = os.path.splitext(module_path)[0].replace(os.path.sep, ".")
-                module_spec = importlib.util.spec_from_file_location(
-                    module_name, module_path
-                )
+                module_spec = importlib.util.spec_from_file_location(module_name, module_path)
 
                 module = importlib.util.module_from_spec(module_spec)
                 module_spec.loader.exec_module(module)
                 for attr_name in dir(module):
                     attr = getattr(module, attr_name)
-                    if isinstance(attr, dramatiq.Actor):
+                    if isinstance(attr, ):
                         actors.append(attr)
         if not recursive:
             break
